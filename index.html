@@ -161,12 +161,20 @@
       box-shadow: var(--shadow);
     }
     video{
-  width:100%;
-  height:100%;
-  object-fit: contain;     /* shows full video */
-  background: #000;        /* fills empty space with black bars */
-  display:block;
-}
+      width:100%;
+      height:100%;
+      object-fit: contain;     /* shows full video */
+      background: #000;        /* fills empty space with black bars */
+      display:block;
+    }
+
+    /* Mobile/top hero video should look like the desktop side video (fill the frame) */
+    #hero .hero-frame video{ object-fit: cover; }
+
+    /* Prevent the desktop side video from showing on mobile */
+    @media (max-width: 979px){
+      .right-video{ display:none; }
+    }
     /* Desktop split layout (desktop only) */
 @media (min-width: 980px){
   .desktop-split{
@@ -229,6 +237,11 @@
     border-radius: 22px;
   }
 }
+
+    /* Mobile: only show the top hero video (hide the desktop side video column) */
+    @media (max-width: 979px){
+      .right-video{ display:none; }
+    }
 
 
     .sound-hint{
@@ -499,10 +512,8 @@
     <div class="hero-frame">
       <!-- NOTE: Mobile browsers often block autoplay with sound until user taps.
            We try unmuted first, and provide a Tap for Sound button. -->
-      <video id="heroVideo" autoplay loop playsinline>
-        <source src="assets/video/Featured.MOV" type="video/mp4" />
-        <!-- If GitHub serves MOV with a different type, browsers still often play it.
-             If it doesn’t play, convert to MP4 and update source. -->
+      <video id="heroVideo" autoplay loop playsinline muted preload="metadata">
+        <source src="assets/video/Featured.MOV" type="video/quicktime" />
       </video>
 
     </div>
@@ -624,8 +635,8 @@
 
   <aside class="right-video">
     <div class="right-video-frame">
-      <video id="sideVideo" autoplay loop playsinline>
-        <source src="assets/video/Featured.MOV" type="video/mp4" />
+      <video id="sideVideo" autoplay loop playsinline muted preload="metadata">
+        <source src="assets/video/Featured.MOV" type="video/quicktime" />
       </video>
     </div>
   </aside>
@@ -716,23 +727,33 @@
       });
     });
 
-   // Hero video auto-sound (no button)
+   // Videos
 const heroVideo = document.getElementById('heroVideo');
+const sideVideo = document.getElementById('sideVideo');
 
+// Ensure autoplay works across browsers (autoplay typically requires muted)
+async function ensurePlaying(v) {
+  if (!v) return;
+  try { await v.play(); } catch (e) { /* ignore */ }
+}
+
+// Try to unlock sound for the top hero video on user interaction
 async function tryPlayWithSound() {
   if (!heroVideo) return;
-
   try {
+    heroVideo.muted = true;
+    await ensurePlaying(heroVideo);
     heroVideo.muted = false;
     heroVideo.volume = 1.0;
-    await heroVideo.play();
+    await ensurePlaying(heroVideo);
   } catch (err) {
     // autoplay with sound blocked by browser
   }
 }
 
-// Try immediately
-tryPlayWithSound();
+// Start videos (muted autoplay)
+ensurePlaying(heroVideo);
+ensurePlaying(sideVideo);
 
 // Auto-unlock sound on first interaction (no button)
 const unlockSound = async () => {
