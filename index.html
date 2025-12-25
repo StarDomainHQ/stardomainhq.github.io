@@ -169,7 +169,7 @@
     }
 
     /* Mobile/top hero video should look like the desktop side video (fill the frame) */
-    #hero .hero-frame video{ object-fit: cover; }
+    #hero .hero-frame video{ object-fit: contain; }
 
     /* Prevent the desktop side video from showing on mobile */
     @media (max-width: 979px){
@@ -513,6 +513,7 @@
       <!-- NOTE: Mobile browsers often block autoplay with sound until user taps.
            We try unmuted first, and provide a Tap for Sound button. -->
       <video id="heroVideo" autoplay loop playsinline muted preload="metadata">
+        <source src="assets/video/Featured_h264.mp4" type="video/mp4" />
         <source src="assets/video/Featured.MOV" type="video/quicktime" />
       </video>
 
@@ -636,6 +637,7 @@
   <aside class="right-video">
     <div class="right-video-frame">
       <video id="sideVideo" autoplay loop playsinline muted preload="metadata">
+        <source src="assets/video/Featured_h264.mp4" type="video/mp4" />
         <source src="assets/video/Featured.MOV" type="video/quicktime" />
       </video>
     </div>
