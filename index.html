@@ -505,9 +505,6 @@
              If it doesn’t play, convert to MP4 and update source. -->
       </video>
 
-      <button id="soundBtn" class="sound-hint" type="button">
-        🔊 <span>Tap for sound</span>
-      </button>
     </div>
   </main>
         <!-- Featured Domains (desktop left column starts here) -->
@@ -627,7 +624,7 @@
 
   <aside class="right-video">
     <div class="right-video-frame">
-      <video id="sideVideo" autoplay loop playsinline muted>
+      <video id="sideVideo" autoplay loop playsinline>
         <source src="assets/video/Featured.MOV" type="video/mp4" />
       </video>
     </div>
@@ -719,33 +716,36 @@
       });
     });
 
-    // Hero video: try to play with sound; mobile may block until user tap
-    const heroVideo = document.getElementById('heroVideo');
-    const soundBtn = document.getElementById('soundBtn');
+   // Hero video auto-sound (no button)
+const heroVideo = document.getElementById('heroVideo');
 
-    async function tryPlayWithSound() {
-      try {
-        heroVideo.muted = false;
-        heroVideo.volume = 1.0;
-        await heroVideo.play();
-      } catch (err) {
-        // autoplay with sound blocked — keep button visible
-      }
-    }
+async function tryPlayWithSound() {
+  if (!heroVideo) return;
 
-    soundBtn.addEventListener('click', async () => {
-      try {
-        heroVideo.muted = false;
-        heroVideo.volume = 1.0;
-        await heroVideo.play();
-        soundBtn.style.display = 'none';
-      } catch (err) {
-        // still blocked; keep visible
-      }
-    });
+  try {
+    heroVideo.muted = false;
+    heroVideo.volume = 1.0;
+    await heroVideo.play();
+  } catch (err) {
+    // autoplay with sound blocked by browser
+  }
+}
 
-    // Attempt immediately
-    tryPlayWithSound();
+// Try immediately
+tryPlayWithSound();
+
+// Auto-unlock sound on first interaction (no button)
+const unlockSound = async () => {
+  await tryPlayWithSound();
+  window.removeEventListener('pointerdown', unlockSound);
+  window.removeEventListener('scroll', unlockSound);
+  window.removeEventListener('keydown', unlockSound);
+};
+
+window.addEventListener('pointerdown', unlockSound, { once: true });
+window.addEventListener('scroll', unlockSound, { once: true });
+window.addEventListener('keydown', unlockSound, { once: true });
+
 
     // Scroll-trigger animations
     const observer = new IntersectionObserver((entries) => {
