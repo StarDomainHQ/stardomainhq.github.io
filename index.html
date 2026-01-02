@@ -649,6 +649,18 @@
 
   <!-- SolNetwork -->
 <section id="solnetwork" class="panel anim-c observe">
+  <style>
+    /* FIX: Allow this section to show fully on mobile without clipping */
+    @media (max-width: 768px) {
+      #solnetwork .glass{
+        max-height: calc(100vh - 150px);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 120px;
+      }
+    }
+  </style>
+
   <div class="panel-bg" style="background-image:url('assets/img/Sol.png');"></div>
   <div class="panel-content">
     <div class="glass">
@@ -675,7 +687,7 @@
         developer networks, and next-generation blockchain services operating on Solana.
       </p>
 
-      <!-- Solar / Energy Section with Background -->
+      <!-- Solar / Energy Section -->
       <div class="solar-bg" style="background-image:url('assets/img/solar.png'); background-size:cover; background-position:center; border-radius:18px; padding:24px; margin-top:18px;">
 
         <!-- Solar / Energy Tags -->
@@ -694,8 +706,13 @@
           Beyond crypto, SolNetwork.ai naturally fits the solar and clean-energy sector.
           The name works perfectly for solar energy platforms, smart grids, renewable data networks,
           energy optimization systems, and AI-powered sustainability infrastructure.
-          Short, authoritative, and highly brandable, it bridges digital networks and real-world
-          energy systems, making it a <span class="premium">premium</span> asset for builders.
+        </p>
+
+        <!-- Final line (added as requested) -->
+        <p class="desc">
+          Short, authoritative, and highly brandable, <strong>SOLNetwork.ai</strong> bridges digital
+          infrastructure and real-world energy systems, making it a
+          <span class="premium">premium</span> asset for founders building next-generation networks.
         </p>
 
       </div>
